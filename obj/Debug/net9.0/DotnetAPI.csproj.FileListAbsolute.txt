@@ -84,3 +84,12 @@
 /Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/runtimes/win/lib/net9.0/System.Diagnostics.EventLog.dll
 /Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/runtimes/win/lib/net9.0/System.Security.Cryptography.Pkcs.dll
 /Users/arsenidmitriev/Desktop/DotnetAPI/obj/Debug/net9.0/DotnetAPI.sourcelink.json
+/Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.dll
+/Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.SqlServer.dll
+/Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/Microsoft.Extensions.Logging.dll
+/Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/System.Formats.Asn1.dll
+/Users/arsenidmitriev/Desktop/DotnetAPI/bin/Debug/net9.0/System.Text.Json.dll
