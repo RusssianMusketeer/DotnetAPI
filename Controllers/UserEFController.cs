@@ -10,9 +10,11 @@ namespace DotnetAPI.Controllers;
 public class UserEFController : ControllerBase
 {
     DataContextEF _entityFramework;
-    public UserEFController(IConfiguration config)
+    IUserRepository _userRepository;
+    public UserEFController(IConfiguration config, IUserRepository userRepository)
     {
         _entityFramework = new DataContextEF(config);
+        _userRepository = userRepository;
     }
 
     [HttpGet("GetUsers")]
@@ -55,7 +57,7 @@ public class UserEFController : ControllerBase
             userDb.LastName = user.LastName;
             userDb.Email = user.Email;
             userDb.Gender = user.Gender;
-            if (_entityFramework.SaveChanges() > 0)
+            if (_userRepository.SaveChanges())
             {
                 return Ok();
             }
@@ -77,8 +79,8 @@ public class UserEFController : ControllerBase
             userDb.Email = user.Email;
             userDb.Gender = user.Gender;
             
-            _entityFramework.Add(userDb);
-            if (_entityFramework.SaveChanges() > 0)
+            _userRepository.AddEntity<User>(userDb);
+            if (_userRepository.SaveChanges())
         {
             return Ok();
         }
@@ -94,9 +96,9 @@ public class UserEFController : ControllerBase
 
         if (userDb != null)
         {
-            _entityFramework.Users.Remove(userDb);
+            _userRepository.DeleteEntity<User>(userDb);
 
-            if (_entityFramework.SaveChanges() > 0)
+            if (_userRepository.SaveChanges())
             {
                 return Ok();
             }
