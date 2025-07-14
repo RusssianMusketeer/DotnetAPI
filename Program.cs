@@ -29,6 +29,7 @@ builder.Services.AddCors((options) =>
     });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IJobInfoRepository, JobInfoRepository>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

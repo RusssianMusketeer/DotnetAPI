@@ -9,8 +9,8 @@ namespace DotnetAPI.Controllers;
 [Route("[controller]")]
 public class UserEFController : ControllerBase
 {
-    DataContextEF _entityFramework;
-    IUserRepository _userRepository;
+    private DataContextEF _entityFramework;
+    private IUserRepository _userRepository;
     public UserEFController(IConfiguration config, IUserRepository userRepository)
     {
         _entityFramework = new DataContextEF(config);
@@ -21,7 +21,7 @@ public class UserEFController : ControllerBase
     public IEnumerable<User> GetUsers()
     {
 
-        IEnumerable<User> users = _entityFramework.Users.ToList<User>();
+        IEnumerable<User> users = _userRepository.GetUsers();
         return users;
 
     }
@@ -30,25 +30,14 @@ public class UserEFController : ControllerBase
     public User GetSingleUser(int userId)
     {
 
-        User? user = _entityFramework.Users
-            .Where(u => u.UserId == userId)
-            .FirstOrDefault<User>();
-
-        if (user != null)
-        {
-            return user;
-        }
-
-        throw new Exception("Failed to Get User");
+        return _userRepository.GetSingleUser(userId);
 
     }
 
     [HttpPut("EditUser")]
     public IActionResult EditUser(User user)
     {
-        User? userDb = _entityFramework.Users
-            .Where(u => u.UserId == user.UserId)
-            .FirstOrDefault<User>();
+        User? userDb = _userRepository.GetSingleUser(user.UserId);
 
         if (userDb != null)
         {

@@ -2,7 +2,7 @@ using DotnetAPI.Models;
 
 namespace DotnetAPI.Data
 {
-    public interface IUserRepository
+    public interface IJobInfoRepository
     {
         public bool SaveChanges();
 
@@ -10,8 +10,8 @@ namespace DotnetAPI.Data
 
         public void DeleteEntity<T>(T entityToRemove);
 
-        public IEnumerable<User> GetUsers();
+        public IEnumerable<UserJobInfo> GetUsersJobInfo();
 
-        public User GetSingleUser(int userId);
+        public UserJobInfo GetSingleJobInfo(int userId);
     }
 }

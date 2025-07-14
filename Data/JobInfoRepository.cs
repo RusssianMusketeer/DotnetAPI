@@ -1,12 +1,13 @@
 using DotnetAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DotnetAPI.Data
 {
-    public class UserRepository : IUserRepository
+    public class JobInfoRepository : IJobInfoRepository
     {
         DataContextEF _entityFramework;
 
-        public UserRepository(IConfiguration config)
+        public JobInfoRepository(IConfiguration config)
         {
             _entityFramework = new DataContextEF(config);
         }
@@ -32,29 +33,31 @@ namespace DotnetAPI.Data
             }
         }
 
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<UserJobInfo> GetUsersJobInfo()
         {
 
-            IEnumerable<User> users = _entityFramework.Users.ToList<User>();
-            return users;
+            IEnumerable<UserJobInfo> usersJobInfo = _entityFramework.UserJobInfo.ToList<UserJobInfo>();
+
+            return usersJobInfo;
 
         }
 
-        public User GetSingleUser(int userId)
+        public UserJobInfo GetSingleJobInfo(int userId)
         {
 
-         User? user = _entityFramework.Users
-            .Where(u => u.UserId == userId)
-            .FirstOrDefault<User>();
+            UserJobInfo? userJobInfo = _entityFramework.UserJobInfo
+               .Where(u => u.UserId == userId)
+               .FirstOrDefault<UserJobInfo>();
 
-            if (user != null)
+            if (userJobInfo != null)
             {
-                return user;
+                return userJobInfo;
             }
 
-        throw new Exception("Failed to Get User");
+            throw new Exception("Failed to Get User Info");
 
-    }
+        }
+        
 
     }
 }
