@@ -9,17 +9,17 @@ namespace DotnetAPI.Controllers;
 [Route("[controller]")]
 public class UserEFSalaryController : ControllerBase
 {
-    DataContextEF _entityFramework;
-    public UserEFSalaryController(IConfiguration config)
+    private ISalaryRepository _salaryRepository;
+    public UserEFSalaryController(ISalaryRepository salaryRepository)
     {
-        _entityFramework = new DataContextEF(config);
+        _salaryRepository = salaryRepository;
     }
 
     [HttpGet("GetUsersSalary")]
     public IEnumerable<UserSalary> GetUsersSalary()
     {
 
-        IEnumerable<UserSalary> usersSalary = _entityFramework.UserSalary.ToList<UserSalary>();
+        IEnumerable<UserSalary> usersSalary = _salaryRepository.GetUsersSalary();
         return usersSalary;
 
     }
@@ -28,31 +28,20 @@ public class UserEFSalaryController : ControllerBase
     public UserSalary GetSingleUserSalary(int userId)
     {
 
-        UserSalary? userSalary = _entityFramework.UserSalary
-            .Where(u => u.UserId == userId)
-            .FirstOrDefault<UserSalary>();
-
-        if (userSalary != null)
-        {
-            return userSalary;
-        }
-
-        throw new Exception("Failed to Get User Salary");
+        return _salaryRepository.GetSingleUserSalary(userId);
 
     }
 
     [HttpPut("EditUserSalary")]
     public IActionResult EditUserSalary(UserSalary userSalary)
     {
-        UserSalary? userSalaryDb = _entityFramework.UserSalary
-            .Where(u => u.UserId == userSalary.UserId)
-            .FirstOrDefault<UserSalary>();
+        UserSalary? userSalaryDb = _salaryRepository.GetSingleUserSalary(userSalary.UserId);
 
         if (userSalaryDb != null)
         {
             userSalaryDb.Salary = userSalary.Salary;
 
-            if (_entityFramework.SaveChanges() > 0)
+            if (_salaryRepository.SaveChanges())
             {
                 return Ok();
             }
@@ -68,28 +57,27 @@ public class UserEFSalaryController : ControllerBase
     {
         UserSalary userSalaryDb = new UserSalary();
         
-            userSalaryDb.Salary = userSalary.Salary;
+        userSalaryDb.Salary = userSalary.Salary;
 
-            _entityFramework.Add(userSalaryDb);
-            if (_entityFramework.SaveChanges() > 0)
-        {
-            return Ok();
-        }
-            throw new Exception("Failed to Add User Salary");
+        _salaryRepository.AddEntity<UserSalary>(userSalaryDb);
+
+        if (_salaryRepository.SaveChanges())
+            {
+                return Ok();
+            }
+        throw new Exception("Failed to Add User Salary");
     }
 
     [HttpDelete("Delete/UserSalary/{userId}")]
     public IActionResult DeleteUserSalary(int userId)
     {
-        UserSalary? userDbSalary = _entityFramework.UserSalary
-            .Where(u => u.UserId == userId)
-            .FirstOrDefault<UserSalary>();
+        UserSalary? userDbSalary = _salaryRepository.GetSingleUserSalary(userId);
 
         if (userDbSalary  != null)
         {
-            _entityFramework.UserSalary.Remove(userDbSalary);
+            _salaryRepository.DeleteEntity<UserSalary>(userDbSalary);
 
-            if (_entityFramework.SaveChanges() > 0)
+            if (_salaryRepository.SaveChanges())
             {
                 return Ok();
             }
