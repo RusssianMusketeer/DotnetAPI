@@ -9,11 +9,9 @@ namespace DotnetAPI.Controllers;
 [Route("[controller]")]
 public class UserEFController : ControllerBase
 {
-    private DataContextEF _entityFramework;
     private IUserRepository _userRepository;
-    public UserEFController(IConfiguration config, IUserRepository userRepository)
+    public UserEFController(IUserRepository userRepository)
     {
-        _entityFramework = new DataContextEF(config);
         _userRepository = userRepository;
     }
 
@@ -79,9 +77,7 @@ public class UserEFController : ControllerBase
     [HttpDelete("Delete/User/{userId}")]
     public IActionResult DeleteUser(int userId)
     {
-        User? userDb = _entityFramework.Users
-            .Where(u => u.UserId == userId)
-            .FirstOrDefault<User>();
+        User? userDb = _userRepository.GetSingleUser(userId);
 
         if (userDb != null)
         {

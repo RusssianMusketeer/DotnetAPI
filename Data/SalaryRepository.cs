@@ -2,11 +2,11 @@ using DotnetAPI.Models;
 
 namespace DotnetAPI.Data
 {
-    public class JobInfoRepository : IJobInfoRepository
+    public class SalaryRepository : ISalaryRepository
     {
         DataContextEF _entityFramework;
 
-        public JobInfoRepository(IConfiguration config)
+        public SalaryRepository(IConfiguration config)
         {
             _entityFramework = new DataContextEF(config);
         }
@@ -32,28 +32,28 @@ namespace DotnetAPI.Data
             }
         }
 
-        public IEnumerable<UserJobInfo> GetUsersJobInfo()
+        public IEnumerable<UserSalary> GetUsersSalary()
         {
 
-            IEnumerable<UserJobInfo> usersJobInfo = _entityFramework.UserJobInfo.ToList<UserJobInfo>();
+            IEnumerable<UserSalary> usersSalary = _entityFramework.UserSalary.ToList<UserSalary>();
 
-            return usersJobInfo;
+            return usersSalary;
 
         }
 
-        public UserJobInfo GetSingleJobInfo(int userId)
+        public UserSalary GetSingleUserSalary(int userId)
         {
 
-            UserJobInfo? userJobInfo = _entityFramework.UserJobInfo
+            UserSalary? userSalary = _entityFramework.UserSalary
                .Where(u => u.UserId == userId)
-               .FirstOrDefault<UserJobInfo>();
+               .FirstOrDefault<UserSalary>();
 
-            if (userJobInfo != null)
+            if (userSalary!= null)
             {
-                return userJobInfo;
+                return userSalary;
             }
 
-            throw new Exception("Failed to Get User Info");
+            throw new Exception("Failed to Get User Salary");
 
         }
         
