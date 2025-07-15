@@ -1,5 +1,3 @@
-using DotnetAPI.Models;
-
 namespace DotnetAPI.Data
 {
     public class AuthoRepository
