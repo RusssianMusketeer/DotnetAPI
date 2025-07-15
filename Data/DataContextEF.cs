@@ -15,6 +15,8 @@ namespace DotnetAPI.Data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserSalary> UserSalary { get; set; }
         public virtual DbSet<UserJobInfo> UserJobInfo { get; set; }
+        
+        public virtual DbSet<Auth> Auth { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -22,7 +24,7 @@ namespace DotnetAPI.Data
             {
                 optionsBuilder.UseSqlServer(_config.GetConnectionString("DefaultConnection"),
                     optionsBuilder => optionsBuilder.EnableRetryOnFailure());
-                
+
             }
         }
 
@@ -38,6 +40,9 @@ namespace DotnetAPI.Data
                 .HasKey(u => u.UserId);
 
             modelBuilder.Entity<UserJobInfo>()
+                .HasKey(u => u.UserId);
+
+            modelBuilder.Entity<Auth>()
                 .HasKey(u => u.UserId);
         }
     }
