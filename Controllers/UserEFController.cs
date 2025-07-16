@@ -44,10 +44,12 @@ public class UserEFController : ControllerBase
             userDb.LastName = user.LastName;
             userDb.Email = user.Email;
             userDb.Gender = user.Gender;
+
             if (_userRepository.SaveChanges())
             {
                 return Ok();
             }
+
             throw new Exception("Failed to Update User");
         }
 

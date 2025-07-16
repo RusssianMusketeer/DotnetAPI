@@ -1,4 +1,5 @@
 using DotnetAPI.Data;
+using DotnetAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddCors((options) =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobInfoRepository, JobInfoRepository>();
+builder.Services.AddScoped<ISalaryRepository, SalaryRepository>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

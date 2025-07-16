@@ -1,17 +1,22 @@
+using System.Security.Cryptography;
+using System.Text;
 using DotnetAPI.Data;
 using DotnetAPI.Dtos;
+using DotnetAPI.Models;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotnetAPI.Controllers
 {
     public class AuthController : ControllerBase
     {
+
+        private readonly IAuthRepository _authRepository;
         private readonly IConfiguration _config;
-        private readonly DataContextDapper _dapper;
-        public AuthController(IConfiguration config)
+        public AuthController(IConfiguration config, IAuthRepository authRepository)
         {
-            _dapper = new DataContextDapper(config);
             _config = config;
+            _authRepository = authRepository;
         }
 
         [HttpPost("Register")]
@@ -19,7 +24,36 @@ namespace DotnetAPI.Controllers
         {
             if (userForRegistration.Password == userForRegistration.PasswordConfirm)
             {
-                return Ok();
+                if (!_authRepository.CheckUserExists(userForRegistration.Email))
+                {
+
+                    byte[] passwordSalt = new byte[128 / 8];
+                    using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+                    {
+                        rng.GetNonZeroBytes(passwordSalt);
+                    }
+
+                    string passwordSaltPlusString = _config.GetSection("AppSettings:PasswordKey").Value +
+                        Convert.ToBase64String(passwordSalt);
+
+                    byte[] passwordHash = KeyDerivation.Pbkdf2(
+                        password: userForRegistration.Password,
+                        salt: Encoding.ASCII.GetBytes(passwordSaltPlusString),
+                        prf: KeyDerivationPrf.HMACSHA256,
+                        iterationCount: 100000,
+                        numBytesRequested: 256 / 8
+                    );
+
+                    string aqlAddAuth = @"
+                    INSERT INTO TutorialAppAchema.Auth  ([Email],
+                    [PasswordHash],
+                    [PasswordSalt]) VALUES ('" + userForRegistration.Email + "";
+                    
+
+
+                }
+
+                throw new Exception("User with this email already exists");
             }
 
             throw new Exception("Passwords do not match");

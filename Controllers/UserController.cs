@@ -74,7 +74,7 @@ public class UserController : ControllerBase
         }
 
         throw new Exception("Failed to update user");
-        
+
     }
 
     [HttpPost("AddUser")]
@@ -87,7 +87,7 @@ public class UserController : ControllerBase
                 [Gender],
                 [Active]
             ) VALUES (" +
-                "'"  + user.FirstName +
+                "'" + user.FirstName +
                 "', '" + user.LastName +
                 "', '" + user.Email +
                 "', '" + user.Gender +
@@ -100,6 +100,21 @@ public class UserController : ControllerBase
         }
 
         throw new Exception("Failed to add user");
+    }
+
+    [HttpDelete("Delete/User/{userId}")]
+    public IActionResult DeleteUser(int userId)
+    {
+        string sql = @"
+            DELETE FROM TutorialAppSchema.Users
+                WHERE UserId = " + userId.ToString();
+
+        if (_dapper.ExecuteSql(sql))
+        {
+            return Ok();
+        }
+
+        throw new Exception("Failed to Delete User");
     }
 }
 

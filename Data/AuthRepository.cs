@@ -1,17 +1,35 @@
+using DotnetAPI.Models;
+
 namespace DotnetAPI.Data
 {
-    public class AuthoRepository
+    public class AuthRepository : IAuthRepository
     {
         DataContextEF _entityFramework;
 
-        public AuthoRepository(IConfiguration config)
+        public AuthRepository(IConfiguration config)
         {
             _entityFramework = new DataContextEF(config);
         }
 
-        public bool CheckUserExists(int userId)
+        public bool CheckUserExists(string email)
         {
-            return _entityFramework.Auth.Where(u => u.UserId == userId).Count() > 0;
+            return _entityFramework.Auth.Where(u => u.Email == email).Count() > 0;
         }
+
+        public void RegisterUser(Auth userToRegister)
+        {
+            if (userToRegister != null)
+            {
+                _entityFramework.Add(userToRegister);
+            }
+        }
+
+
+        public bool SaveChanges()
+        {
+            return _entityFramework.SaveChanges() > 0;
+        }
+
+        
     }
 }
