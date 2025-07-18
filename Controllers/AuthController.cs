@@ -1,3 +1,4 @@
+using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 using DotnetAPI.Data;
@@ -5,6 +6,7 @@ using DotnetAPI.Dtos;
 using DotnetAPI.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace DotnetAPI.Controllers
 {
@@ -44,11 +46,23 @@ namespace DotnetAPI.Controllers
                         numBytesRequested: 256 / 8
                     );
 
+                    List<SqlParameter> sqlParameters = new List<SqlParameter>();
+
                     string aqlAddAuth = @"
                     INSERT INTO TutorialAppAchema.Auth  ([Email],
                     [PasswordHash],
-                    [PasswordSalt]) VALUES ('" + userForRegistration.Email + "";
-                    
+                    [PasswordSalt]) VALUES ('" + userForRegistration.Email +
+                    "', @PasswordHash, @PasswordSalt)";
+
+                    SqlParameter passwordSaltParameter = new SqlParameter("@PasswordSalt", SqlDbType.VarBinary);
+                    passwordSaltParameter.Value = passwordSalt;
+
+
+                    SqlParameter passwordHashParameter = new SqlParameter("@PasswordHash", SqlDbType.VarBinary);
+                    passwordHashParameter.Value = passwordHash;
+
+                    sqlParameters.Add(passwordSaltParameter);
+                    sqlParameters.Add(passwordHashParameter);
 
 
                 }

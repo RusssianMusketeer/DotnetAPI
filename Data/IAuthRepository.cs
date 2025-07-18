@@ -1,4 +1,5 @@
 using DotnetAPI.Models;
+using Microsoft.Data.SqlClient;
 
 namespace DotnetAPI.Data
 {
@@ -9,6 +10,8 @@ namespace DotnetAPI.Data
         public void RegisterUser(Auth userToRegister);
 
         public bool SaveChanges();
+
+        public bool ExecuteSqlWithParameters(string sql, List<SqlParameter> sqlParameters)
 
 
     }
