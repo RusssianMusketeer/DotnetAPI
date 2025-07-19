@@ -1,4 +1,5 @@
 using DotnetAPI.Models;
+using Microsoft.Data.SqlClient;
 
 namespace DotnetAPI.Data
 {
