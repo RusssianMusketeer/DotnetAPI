@@ -11,7 +11,7 @@ namespace DotnetAPI.Data
 
         public bool SaveChanges();
 
-        public bool ExecuteSqlWithParameters(string sql, List<SqlParameter> sqlParameters) ;
+        public bool ExecuteSqlWithParameters(string sql, List<SqlParameter> sqlParameters);
 
 
     }
